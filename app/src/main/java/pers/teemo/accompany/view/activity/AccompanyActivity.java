@@ -41,7 +41,7 @@ public class AccompanyActivity extends AppCompatActivity {
                 getResources().getString(R.string.accompany_total_date_time_full));
         runOnUiThread(totalDateTimeUpdater);
         // 事件列表
-        ListView listViewEvent = findViewById(R.id.lis_view_event);
+        ListView listViewEvent = findViewById(R.id.list_view_event);
         SimpleBaseAdapter<Event> eventSimpleBaseAdapter = new SimpleBaseAdapter<>(
                 R.layout.activity_accompany_list_event,
                 this,

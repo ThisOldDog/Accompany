@@ -4,24 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/activity_background_accompany"
     tools:context=".view.activity.AccompanyActivity">
 
-    <TextView
-        android:id="@+id/text_view_total_date_time"
+    <LinearLayout
+        android:id="@+id/linear_layout_total_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/loading"
-        android:textAlignment="center"
-        android:textSize="36sp"
+        android:background="@drawable/rectangle_rffr_white_translucent"
+        android:orientation="horizontal"
+        android:padding="16dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <pers.teemo.accompany.view.extension.ShapeImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/boy_avatar"
+            android:src="@drawable/boy_avatar"
+            app:border_color="@color/orange"
+            app:border_width="1dp"
+            app:radius="25dp" />
+
+        <TextView
+            android:id="@+id/text_view_total_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center"
+            android:text="@string/loading"
+            android:textAlignment="center"
+            android:textSize="28sp" />
+
+        <pers.teemo.accompany.view.extension.ShapeImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/girl_avatar"
+            android:src="@drawable/girl_avatar"
+            app:border_color="@color/orange"
+            app:border_width="1dp"
+            app:radius="25dp" />
+    </LinearLayout>
 
     <ListView
-        android:id="@+id/lis_view_event"
+        android:id="@+id/list_view_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -29,5 +61,5 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_total_date_time" />
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_total_date" />
 </androidx.constraintlayout.widget.ConstraintLayout>

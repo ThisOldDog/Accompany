@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="ShapeImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="radius" format="dimension" />
+    </declare-styleable>
+</resources>

@@ -5,4 +5,6 @@
     <string name="accompany_total_list_event_month_day">"%d 月 %d 日"</string>
     <string name="accompany_total_list_event_year">"%d 年"</string>
     <string name="accompany_total_list_event_days">"%d 天"</string>
+    <string name="boy_avatar">Boy avatar</string>
+    <string name="girl_avatar">Girl avatar</string>
 </resources>
