@@ -1,5 +1,7 @@
 package pers.teemo.accompany.view.activity;
 
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import pers.teemo.accompany.entity.Event;
 import pers.teemo.accompany.view.adapter.SimpleBaseAdapter;
 
 public class AccompanyActivity extends AppCompatActivity {
+    private static final String SETTING = "ACCOMPANY_SETTING";
     private static final long PERIOD = 1000 * 60 * 60 * 24;
     private final Timer TIMER = new Timer();
 
@@ -38,7 +41,8 @@ public class AccompanyActivity extends AppCompatActivity {
         TotalDateTimeUpdater totalDateTimeUpdater = new TotalDateTimeUpdater(
                 companion,
                 findViewById(R.id.text_view_total_date_time),
-                getResources().getString(R.string.accompany_total_date_time_full));
+                getResources(),
+                getSharedPreferences(SETTING, MODE_PRIVATE));
         runOnUiThread(totalDateTimeUpdater);
         // 事件列表
         ListView listViewEvent = findViewById(R.id.list_view_event);
@@ -51,17 +55,17 @@ public class AccompanyActivity extends AppCompatActivity {
                     ((TextView) convertView.findViewById(R.id.text_view_event_month_day))
                             .setText(String.format(
                                     Locale.getDefault(),
-                                    getResources().getString(R.string.accompany_total_list_event_month_day),
+                                    getResources().getString(R.string.date_month_day),
                                     event.getStartDate().getMonthValue(), event.getStartDate().getDayOfMonth()));
                     ((TextView) convertView.findViewById(R.id.text_view_event_year))
                             .setText(String.format(
                                     Locale.getDefault(),
-                                    getResources().getString(R.string.accompany_total_list_event_year),
+                                    getResources().getString(R.string.date_year),
                                     event.getStartDate().getYear()));
                     ((TextView) convertView.findViewById(R.id.text_view_event_days))
                             .setText(String.format(
                                     Locale.getDefault(),
-                                    getResources().getString(R.string.accompany_total_list_event_days),
+                                    getResources().getString(R.string.date_day),
                                     ChronoUnit.DAYS.between(LocalDate.now(), event.getStartDate())));
                     ((TextView) convertView.findViewById(R.id.text_view_event_name))
                             .setText(event.getEventName());
@@ -92,20 +96,70 @@ public class AccompanyActivity extends AppCompatActivity {
     }
 
     private static class TotalDateTimeUpdater extends TimerTask {
+        public static final String DISPLAY = "DISPLAY";
         private final Companion companion;
         private final TextView textViewTotalDateTime;
-        private final String format;
+        private final Resources resources;
+        private final SharedPreferences sharedPreferences;
 
-        public TotalDateTimeUpdater(Companion companion, TextView textViewTotalDateTime, String format) {
+        public TotalDateTimeUpdater(Companion companion, TextView textViewTotalDateTime, Resources resources, SharedPreferences sharedPreferences) {
             this.companion = companion;
             this.textViewTotalDateTime = textViewTotalDateTime;
-            this.format = format;
+            this.resources = resources;
+            this.sharedPreferences = sharedPreferences;
+            setAction();
+        }
+
+        public void setAction() {
+            textViewTotalDateTime.setOnClickListener(v -> {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(TotalDateTimeUpdater.DISPLAY,
+                        TotalNameDisplayMode.next(sharedPreferences.getString(TotalDateTimeUpdater.DISPLAY, TotalNameDisplayMode.DAY.name())));
+                editor.apply();
+                editor.commit();
+                refreshDisplay();
+            });
         }
 
         @Override
         public void run() {
-            Period between = Period.between(companion.getStartDate(), LocalDate.now());
-            textViewTotalDateTime.setText(String.format(Locale.getDefault(), format, between.getYears(), between.getMonths(), between.getDays()));
+            refreshDisplay();
+        }
+
+        public void refreshDisplay() {
+            textViewTotalDateTime.setText(getDisplay());
+        }
+
+        private String getDisplay() {
+
+            switch (TotalNameDisplayMode.valueOf(sharedPreferences.getString(DISPLAY, TotalNameDisplayMode.DATE.name()))) {
+                case DAY:
+                    return String.format(Locale.getDefault(), resources.getString(R.string.date_day), companion.getStartDate().until(LocalDate.now(), ChronoUnit.DAYS));
+                case DATE:
+                default:
+                    Period between = Period.between(companion.getStartDate(), LocalDate.now());
+                    int year, month;
+                    if ((year = between.getYears()) > 0) {
+                        return String.format(Locale.getDefault(), resources.getString(R.string.date_year_month_day), year, between.getMonths(), between.getDays());
+                    } else if ((month = between.getMonths()) > 0) {
+                        return String.format(Locale.getDefault(), resources.getString(R.string.date_month_day), month, between.getDays());
+                    } else {
+                        return String.format(Locale.getDefault(), resources.getString(R.string.date_day), between.getDays());
+                    }
+            }
+        }
+    }
+
+    private enum TotalNameDisplayMode {
+        DAY,
+        DATE;
+
+        public static String next(String mode) {
+            if (DAY.name().equals(mode)) {
+                return DATE.name();
+            } else {
+                return DAY.name();
+            }
         }
     }
 }

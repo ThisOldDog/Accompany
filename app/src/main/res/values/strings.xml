@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">Accompany</string>
     <string name="loading">加载中...</string>
-    <string name="accompany_total_date_time_full">"%d 年 %d 月 %d 日"</string>
-    <string name="accompany_total_list_event_month_day">"%d 月 %d 日"</string>
-    <string name="accompany_total_list_event_year">"%d 年"</string>
-    <string name="accompany_total_list_event_days">"%d 天"</string>
+    <string name="date_year_month_day">"%d 年 %d 月 %d 日"</string>
+    <string name="date_month_day">"%d 月 %d 日"</string>
+    <string name="date_year">"%d 年"</string>
+    <string name="date_day">"%d 天"</string>
     <string name="boy_avatar">Boy avatar</string>
     <string name="girl_avatar">Girl avatar</string>
+    <string name="event">事件</string>
+    <string name="setting">设置</string>
 </resources>
